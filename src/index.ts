@@ -1,3 +1,3 @@
 import Iris from './components/Iris'
-
-export { Iris }
+import { IrisData } from './interface/interface'
+export { Iris, IrisData }

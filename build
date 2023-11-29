@@ -1,0 +1,2 @@
+npm pack
+mv iris-validation-0.* ../frontend
