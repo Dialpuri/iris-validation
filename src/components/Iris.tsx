@@ -88,12 +88,26 @@ export default function Iris(props: IrisProps) {
         if (props.from_wasm) {
             const data = parse_results(props.results.data)
             setCombinedData(data)
-            const chain_list = get_chain_list(props.results.data)
+
+            let chain_list
+            if (!props.results.chain_list) {
+                chain_list = get_chain_list(props.results.data)
+            } else {
+                chain_list = props.results.chain_list
+            }
             setChainListSet(true)
             setChainList(chain_list)
             setSelectedChain(chain_list[0])
-            setFileList(Object.keys(data))
-            setSelectedFile(Object.keys(data)[0])
+
+            if (!props.results.file_list) {
+                setFileList(Object.keys(data))
+                setSelectedFile(Object.keys(data)[0])
+            } else {
+                console.log("File list supplied")
+                setFileList(props.results.file_list)
+                setSelectedFile(props.results.file_list[0])
+            }
+
             return
         }
         if (props.results.data) {
@@ -121,6 +135,7 @@ export default function Iris(props: IrisProps) {
         if (!selectedChain) return
 
         // Check for new chain lists
+        console.log(combinedData, selectedFile)
         const new_file_chains: string[] = Object.keys(combinedData[selectedFile])
         setChainList(new_file_chains)
         for (const chain in new_file_chains) {
