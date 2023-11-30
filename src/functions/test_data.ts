@@ -27,15 +27,13 @@ export function generate_random_data(metrics: number) {
         'TYR',
         'VAL',
     ]
-    let chain_data: ChainData = {}
+    const chain_data: ChainData = {}
     for (let i = 0; i < chains; i++) {
-
-        let residue_data: ResidueData = {}
+        const residue_data: ResidueData = {}
         for (let j = 0; j < residues; j++) {
-
             const metric_list = []
             for (let k = 0; k < metrics; k++) {
-                const metric_data = {
+                const metric_data: MetricData = {
                     name: Math.floor(Math.random() * amino_acids.length).toString(),
                     value: Math.random() * 40,
                     seqnum: j,
@@ -48,10 +46,10 @@ export function generate_random_data(metrics: number) {
             residue_data[r_key] = metric_list
         }
         const c_key = chain_labels[i]
-        chain_data[c_key] = residue_data 
+        chain_data[c_key] = residue_data
     }
 
-    data["input1"] = chain_data
+    data['input1'] = chain_data
 
     return data
 }

@@ -1,5 +1,5 @@
 export function calculate_poly_line(center: Array<number>, radius: number, data: Array<number>, header: number) {
-    const gap = (360 - header) / (data.length-1)
+    const gap = (360 - header) / (data.length - 1)
 
     let poly_list = ''
 

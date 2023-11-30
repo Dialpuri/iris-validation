@@ -17,7 +17,19 @@ export function normalise_data(arr: Array<number>) {
     const norm = arr.map((e) => {
         return avg - e
     })
-    return norm
+
+    let norm_total = 0
+    for (let i = 0; i < norm.length; i++) {
+        norm_total += arr[i]
+    }
+    const norm_avg = norm_total / norm_total
+
+    const exaggerate = norm.map((e) => {
+        if (e > norm_avg) return norm_avg
+        return e 
+    })
+
+    return exaggerate
 }
 
 /**Transform the entire data into an object of format

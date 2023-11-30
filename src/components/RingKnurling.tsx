@@ -22,7 +22,7 @@ export default function RingKnurling(props: RingKnurlingType) {
     // let inner_ring: any[] = []
 
     for (let i = 0; i <= props.number; i++) {
-        const angle = (((i * range) / props.number) + start_point) * (Math.PI / 180)
+        const angle = ((i * range) / props.number + start_point) * (Math.PI / 180)
 
         const x1 = props.center[0] + props.radius * Math.sin(angle)
         const y1 = props.center[1] - props.radius * Math.cos(angle)

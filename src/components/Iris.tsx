@@ -83,6 +83,7 @@ export default function Iris(props: IrisProps) {
             }
 
             setSelectedResidue(residueData[index])
+            return residueData[index]
         }
     }
 
@@ -184,7 +185,7 @@ export default function Iris(props: IrisProps) {
         setRingTextData(current_ring_text)
     }, [selectedChain, selectedFile])
 
-    function handle_mouse_move(e: any) {
+    function handle_mouse_move(e: any, click: boolean) {
         const svg = document.getElementById('svg')
         if (!svg) return
         const bounds = svg.getBoundingClientRect()
@@ -209,10 +210,15 @@ export default function Iris(props: IrisProps) {
             angle += 360
         }
 
-        get_current_residue(angle)
 
         const center_line = calculate_center_line(center, angle, props.aesthetics.max_radius)
         setCenterLinePoints(center_line)
+
+        const residue = get_current_residue(angle)
+
+        if (click) {
+            props.callback(`${selectedChain}/${residue}`)
+        }
     }
 
     const chainSelectionButtonsProps = {
@@ -277,7 +283,10 @@ export default function Iris(props: IrisProps) {
                 height={props.aesthetics.dimensions[1]}
                 viewBox={`0 0 ${props.aesthetics.dimensions[0]} ${props.aesthetics.dimensions[1]}`}
                 onMouseMove={(e) => {
-                    handle_mouse_move(e)
+                    handle_mouse_move(e, false)
+                }}
+                onClick={(e) => { 
+                    handle_mouse_move(e, true)
                 }}
             >
                 <RingKnurling {...ringKurnlingProps} />
