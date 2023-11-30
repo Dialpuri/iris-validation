@@ -1,13 +1,12 @@
-export function calculate_poly_line(center: Array<number>, radius: number, data: Array<number>) {
-    const header = 40
-    const gap = (360 - header) / data.length
+export function calculate_poly_line(center: Array<number>, radius: number, data: Array<number>, header: number) {
+    const gap = (360 - header) / (data.length-1)
 
     let poly_list = ''
 
-    for (let i = 1; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         const angle = (header / 2 + gap * i) * (Math.PI / 180)
 
-        if (i == 1) {
+        if (i == 0) {
             const x = center[0] + radius * Math.sin(angle)
             const y = center[1] - radius * Math.cos(angle)
             poly_list += x
@@ -34,8 +33,7 @@ export function calculate_poly_line(center: Array<number>, radius: number, data:
     }
     return poly_list
 }
-export function calculate_poly_line_for_circle(center: Array<number>, radius: number) {
-    const header = 40
+export function calculate_poly_line_for_circle(center: Array<number>, radius: number, header: number) {
     const gap = 360 - header
 
     let poly_list = ''
@@ -44,6 +42,10 @@ export function calculate_poly_line_for_circle(center: Array<number>, radius: nu
         const angle = (header / 2 + i) * (Math.PI / 180)
         const x = center[0] + radius * Math.sin(angle)
         const y = center[1] - radius * Math.cos(angle)
+
+        if (Number.isNaN(x)) continue
+        if (Number.isNaN(y)) continue
+
         poly_list += x
         poly_list += ','
         poly_list += y

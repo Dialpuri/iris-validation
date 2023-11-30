@@ -1,3 +1,8 @@
+/**
+ * Iris
+ *
+ * Jordan S. Dialpuri 2023
+ */
 import ChainSelectionButtons from './ChainSelectionButtons'
 import {
     calculate_center_line,
@@ -37,7 +42,7 @@ import { IrisProps, ModelData, MultiRingData, ResidueData } from '../interface/i
  * }
  * **/
 export default function Iris(props: IrisProps) {
-    const center = [500, 500]
+    const center = props.aesthetics.center
 
     const [residueData, setResidueData] = useState<Array<any>>()
     const [selectedResidue, setSelectedResidue] = useState()
@@ -83,8 +88,7 @@ export default function Iris(props: IrisProps) {
 
     /** Initialisation hook **/
     useEffect(() => {
-        console.log(props)
-
+        // console.log(props)
         if (props.from_wasm) {
             const data = parse_results(props.results.data)
             setCombinedData(data)
@@ -103,7 +107,7 @@ export default function Iris(props: IrisProps) {
                 setFileList(Object.keys(data))
                 setSelectedFile(Object.keys(data)[0])
             } else {
-                console.log("File list supplied")
+                console.log('File list supplied')
                 setFileList(props.results.file_list)
                 setSelectedFile(props.results.file_list[0])
             }
@@ -135,7 +139,6 @@ export default function Iris(props: IrisProps) {
         if (!selectedChain) return
 
         // Check for new chain lists
-        console.log(combinedData, selectedFile)
         const new_file_chains: string[] = Object.keys(combinedData[selectedFile])
         setChainList(new_file_chains)
         for (const chain in new_file_chains) {
@@ -152,7 +155,7 @@ export default function Iris(props: IrisProps) {
 
         const metrics: MultiRingData = extract_metric_values(current_chain_data)
 
-        let current_radius = 400
+        let current_radius = props.aesthetics.max_radius - props.aesthetics.radius_change
 
         const current_rings = []
         const current_ring_text = []
@@ -160,9 +163,9 @@ export default function Iris(props: IrisProps) {
 
         for (const metric in metrics) {
             const normalised = normalise_data(metrics[metric].array)
-            const polyline = calculate_poly_line(center, current_radius, normalised)
+            const polyline = calculate_poly_line(center, current_radius, normalised, props.aesthetics.header)
 
-            const center_ring = calculate_poly_line_for_circle(center, current_radius)
+            const center_ring = calculate_poly_line_for_circle(center, current_radius, props.aesthetics.header)
             const points = polyline + center_ring
 
             const residue_data: string[] = get_residue_data(current_chain_data)
@@ -172,7 +175,7 @@ export default function Iris(props: IrisProps) {
             current_ring_text.push([...ring_text_pos, metric])
 
             current_rings.push(points)
-            current_radius -= 50
+            current_radius -= props.aesthetics.radius_change
 
             dataLength = normalised.length
         }
@@ -193,11 +196,11 @@ export default function Iris(props: IrisProps) {
 
         let angle = (180 / Math.PI) * Math.atan2(delta_y, delta_x) + 90
 
-        if (angle > 0 && angle < 20) {
-            angle = 20
+        if (angle > 0 && angle < props.aesthetics.header / 2) {
+            angle = props.aesthetics.header / 2
         }
 
-        if (-20 < angle && angle < 0) {
+        if (-props.aesthetics.header / 2 < angle && angle < 0) {
             angle = 340
         }
 
@@ -208,7 +211,7 @@ export default function Iris(props: IrisProps) {
 
         get_current_residue(angle)
 
-        const center_line = calculate_center_line(center, angle, 450)
+        const center_line = calculate_center_line(center, angle, props.aesthetics.max_radius)
         setCenterLinePoints(center_line)
     }
 
@@ -220,9 +223,9 @@ export default function Iris(props: IrisProps) {
     }
 
     const ringKurnlingProps = {
-        center: [500, 500],
-        header: 40,
-        radius: 450,
+        center: center,
+        header: props.aesthetics.header,
+        radius: props.aesthetics.max_radius,
         number: dataLength ? dataLength : 0,
     }
 
@@ -270,9 +273,9 @@ export default function Iris(props: IrisProps) {
                 xmlns='http://www.w3.org/2000/svg'
                 version='1.1'
                 xmlnsXlink='http://www.w3.org/1999/xlink'
-                width='1000'
-                height='1000'
-                viewBox='0 0 1000 1000'
+                width={props.aesthetics.dimensions[0]}
+                height={props.aesthetics.dimensions[1]}
+                viewBox={`0 0 ${props.aesthetics.dimensions[0]} ${props.aesthetics.dimensions[1]}`}
                 onMouseMove={(e) => {
                     handle_mouse_move(e)
                 }}

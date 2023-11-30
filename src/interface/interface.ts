@@ -23,9 +23,29 @@ export type IrisData = {
     file_list: string[] | undefined | null
 }
 
+export type IrisAesthetics = {
+    /** Dimensions in array form [width,height] **/
+    dimensions: number[]
+
+    /** Ring center point in array formc [x.y]
+     * e.g. 1000px by 1000px panel, center could be 500,500
+     *  **/
+    center: number[]
+
+    /** Maximum radius for outermost circle **/
+    max_radius: number
+
+    /** Radius change between circles **/
+    radius_change: number
+
+    /** Header angle (gap at top of the rings) - e.g. 40**/
+    header: number
+}
+
 export interface IrisProps {
     from_wasm: boolean
     results: IrisData
+    aesthetics: IrisAesthetics
 }
 
 /** Type spec for result bindings - from web assembly**/

@@ -1,3 +1,8 @@
+/**
+ * Ring Knurling
+ *
+ * Jordan S. Dialpuri 2023
+ */
 import React from 'react'
 
 export interface RingKnurlingType {
@@ -16,8 +21,8 @@ export default function RingKnurling(props: RingKnurlingType) {
     // let outer_ring: any[] = []
     // let inner_ring: any[] = []
 
-    for (let i = 0; i < props.number; i++) {
-        const angle = ((i * range) / props.number + start_point) * (Math.PI / 180)
+    for (let i = 0; i <= props.number; i++) {
+        const angle = (((i * range) / props.number) + start_point) * (Math.PI / 180)
 
         const x1 = props.center[0] + props.radius * Math.sin(angle)
         const y1 = props.center[1] - props.radius * Math.cos(angle)
