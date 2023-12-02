@@ -69,7 +69,8 @@ import { IrisProps, ModelData, MultiRingData, ResidueData } from '../interface/i
  * ============
  * **/
 export default function Iris(props: IrisProps) {
-    const center = props.aesthetics.center
+    const center = [500,500]
+    const max_radius = 490
 
     const [residueData, setResidueData] = useState<Array<any>>()
     const [selectedResidue, setSelectedResidue] = useState()
@@ -182,7 +183,7 @@ export default function Iris(props: IrisProps) {
 
         const metrics: MultiRingData = extract_metric_values(current_chain_data)
 
-        let current_radius = props.aesthetics.max_radius - props.aesthetics.radius_change
+        let current_radius = max_radius - props.aesthetics.radius_change
 
         const current_rings = []
         const current_ring_text = []
@@ -212,16 +213,23 @@ export default function Iris(props: IrisProps) {
     }, [selectedChain, selectedFile])
 
     function handle_mouse_move(e: any, click: boolean) {
-        const svg = document.getElementById('svg')
+        const svg = document.querySelector('#svg rect') as any
         if (!svg) return
-        const bounds = svg.getBoundingClientRect()
-        const x = e.clientX - bounds.x
-        const y = e.clientY - bounds.y
+
+        
+        let pt = new DOMPoint()
+        pt.x = e.clientX
+        pt.y = e.clientY
+
+
+        const point = pt.matrixTransform(svg.getScreenCTM().inverse())
+        const x = point.x
+        const y = point.y
 
         const delta_x = x - center[0]
         const delta_y = y - center[1]
 
-        let angle = (180 / Math.PI) * Math.atan2(delta_y, delta_x) + 90
+        let angle = (180 / Math.PI) * Math.atan2(delta_y, delta_x)  + 90
 
         if (angle > 0 && angle < props.aesthetics.header / 2) {
             angle = props.aesthetics.header / 2
@@ -237,7 +245,7 @@ export default function Iris(props: IrisProps) {
         }
 
 
-        const center_line = calculate_center_line(center, angle, props.aesthetics.max_radius)
+        const center_line = calculate_center_line(center, angle, max_radius)
         setCenterLinePoints(center_line)
 
         const residue = get_current_residue(angle)
@@ -257,7 +265,7 @@ export default function Iris(props: IrisProps) {
     const ringKurnlingProps = {
         center: center,
         header: props.aesthetics.header,
-        radius: props.aesthetics.max_radius,
+        radius: max_radius,
         number: dataLength ? dataLength : 0,
     }
 
@@ -316,6 +324,7 @@ export default function Iris(props: IrisProps) {
                 }}
                 className='mx-auto'
             >
+                <rect id="bounding_rect" x={0} y={0} width={1000} height={1000} fillOpacity={0}></rect>
                 <RingKnurling {...ringKurnlingProps} />
 
                 {ringTextData ? (
