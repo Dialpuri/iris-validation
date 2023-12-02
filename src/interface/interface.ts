@@ -40,6 +40,9 @@ export type IrisAesthetics = {
 
     /** Header angle (gap at top of the rings) - e.g. 40**/
     header: number
+
+    /** Text size **/
+    text_size: number
 }
 
 export interface IrisProps {

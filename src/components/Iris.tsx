@@ -22,15 +22,37 @@ import React, { useEffect, useState } from 'react'
 import { IrisProps, ModelData, MultiRingData, ResidueData } from '../interface/interface.js'
 
 /** Iris
+ * ===========
  *  If the data for Iris is calculated through the supplied bindings the props format should be
+ * aes: IrisAesthetics = {
+ *    dimensions: [1000,00]
+ *    center:[500,500], 
+ *    max_radius: 490, 
+ *    radius_change: 50, 
+ *    header: 40
+ * }
  * results: IrisData = {
  *    data: backend_call().results
- * } - chain_list and file_list undefined or null
+ *    chain_list: null
+ *    file_list: file_list
+ * }
  * props = {
  *    from_wasm: true
  *    results: results
+ *    aesthetics: aes
+ *    callback: (residue) => {
+ *       // use residue ID supplied
+ *     }
  * }
+ * ===========
  * If the data for Iris comes from another source, the input prop format should be
+ * aes: IrisAesthetics = {
+ *    dimensions: [1000,00]
+ *    center: [500,500], 
+ *    max_radius: 490, 
+ *    radius_change: 50, 
+ *    header: 40
+ * }
  * results: IrisData = {
  *    data: DATA,
  *    chain_list: CHAINLIST
@@ -39,7 +61,12 @@ import { IrisProps, ModelData, MultiRingData, ResidueData } from '../interface/i
  * props = {
  *    from_wasm: false
  *    results: results
+ *    aesthetics: aes
+ *    callback: (residue) => {
+ *       // use residue ID supplied
+ *     }
  * }
+ * ============
  * **/
 export default function Iris(props: IrisProps) {
     const center = props.aesthetics.center
@@ -108,7 +135,6 @@ export default function Iris(props: IrisProps) {
                 setFileList(Object.keys(data))
                 setSelectedFile(Object.keys(data)[0])
             } else {
-                console.log('File list supplied')
                 setFileList(props.results.file_list)
                 setSelectedFile(props.results.file_list[0])
             }
@@ -172,7 +198,7 @@ export default function Iris(props: IrisProps) {
             const residue_data: string[] = get_residue_data(current_chain_data)
             setResidueData(residue_data)
 
-            const ring_text_pos = calculate_text_position(center, metric, current_radius)
+            const ring_text_pos = calculate_text_position(center, metric, current_radius, props.aesthetics.text_size)
             current_ring_text.push([...ring_text_pos, metric])
 
             current_rings.push(points)
@@ -281,20 +307,21 @@ export default function Iris(props: IrisProps) {
                 xmlnsXlink='http://www.w3.org/1999/xlink'
                 width={props.aesthetics.dimensions[0]}
                 height={props.aesthetics.dimensions[1]}
-                viewBox={`0 0 ${props.aesthetics.dimensions[0]} ${props.aesthetics.dimensions[1]}`}
+                viewBox={`0 0 1000 1000`}
                 onMouseMove={(e) => {
                     handle_mouse_move(e, false)
                 }}
                 onClick={(e) => { 
                     handle_mouse_move(e, true)
                 }}
+                className='mx-auto'
             >
                 <RingKnurling {...ringKurnlingProps} />
 
                 {ringTextData ? (
                     ringTextData.map((item, index) => {
                         return (
-                            <text x={item[0]} y={item[1]} fill='gray' key={index}>
+                            <text x={item[0]} y={item[1]} fill='gray' key={index} textLength={props.aesthetics.text_size}>
                                 {item[2]}
                             </text>
                         )

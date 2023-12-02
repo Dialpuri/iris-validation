@@ -60,7 +60,6 @@ export function extract_metric_values(results: any) {
  * This function can be used if the Iris backend is in place, otherwise ModelData can be created in another waty.
  * **/
 export function parse_results(results: any): ModelData {
-    console.log(results)
     const data: ModelData = {}
 
     for (let result_index = 0; result_index < results.size(); result_index++) {
