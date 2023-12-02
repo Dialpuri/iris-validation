@@ -26,7 +26,7 @@ export function normalise_data(arr: Array<number>) {
 
     const exaggerate = norm.map((e) => {
         if (e > norm_avg) return norm_avg
-        return e 
+        return e
     })
 
     return exaggerate

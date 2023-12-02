@@ -26,9 +26,9 @@ import { IrisProps, ModelData, MultiRingData, ResidueData } from '../interface/i
  *  If the data for Iris is calculated through the supplied bindings the props format should be
  * aes: IrisAesthetics = {
  *    dimensions: [1000,00]
- *    center:[500,500], 
- *    max_radius: 490, 
- *    radius_change: 50, 
+ *    center:[500,500],
+ *    max_radius: 490,
+ *    radius_change: 50,
  *    header: 40
  * }
  * results: IrisData = {
@@ -48,9 +48,9 @@ import { IrisProps, ModelData, MultiRingData, ResidueData } from '../interface/i
  * If the data for Iris comes from another source, the input prop format should be
  * aes: IrisAesthetics = {
  *    dimensions: [1000,00]
- *    center: [500,500], 
- *    max_radius: 490, 
- *    radius_change: 50, 
+ *    center: [500,500],
+ *    max_radius: 490,
+ *    radius_change: 50,
  *    header: 40
  * }
  * results: IrisData = {
@@ -69,7 +69,7 @@ import { IrisProps, ModelData, MultiRingData, ResidueData } from '../interface/i
  * ============
  * **/
 export default function Iris(props: IrisProps) {
-    const center = [500,500]
+    const center = [500, 500]
     const max_radius = 490
 
     const [residueData, setResidueData] = useState<Array<any>>()
@@ -216,11 +216,9 @@ export default function Iris(props: IrisProps) {
         const svg = document.querySelector('#svg rect') as any
         if (!svg) return
 
-        
-        let pt = new DOMPoint()
+        const pt = new DOMPoint()
         pt.x = e.clientX
         pt.y = e.clientY
-
 
         const point = pt.matrixTransform(svg.getScreenCTM().inverse())
         const x = point.x
@@ -229,7 +227,7 @@ export default function Iris(props: IrisProps) {
         const delta_x = x - center[0]
         const delta_y = y - center[1]
 
-        let angle = (180 / Math.PI) * Math.atan2(delta_y, delta_x)  + 90
+        let angle = (180 / Math.PI) * Math.atan2(delta_y, delta_x) + 90
 
         if (angle > 0 && angle < props.aesthetics.header / 2) {
             angle = props.aesthetics.header / 2
@@ -243,7 +241,6 @@ export default function Iris(props: IrisProps) {
         if (angle < 0) {
             angle += 360
         }
-
 
         const center_line = calculate_center_line(center, angle, max_radius)
         setCenterLinePoints(center_line)
@@ -319,18 +316,24 @@ export default function Iris(props: IrisProps) {
                 onMouseMove={(e) => {
                     handle_mouse_move(e, false)
                 }}
-                onClick={(e) => { 
+                onClick={(e) => {
                     handle_mouse_move(e, true)
                 }}
                 className='mx-auto'
             >
-                <rect id="bounding_rect" x={0} y={0} width={1000} height={1000} fillOpacity={0}></rect>
+                <rect id='bounding_rect' x={0} y={0} width={1000} height={1000} fillOpacity={0}></rect>
                 <RingKnurling {...ringKurnlingProps} />
 
                 {ringTextData ? (
                     ringTextData.map((item, index) => {
                         return (
-                            <text x={item[0]} y={item[1]} fill='gray' key={index} textLength={props.aesthetics.text_size}>
+                            <text
+                                x={item[0]}
+                                y={item[1]}
+                                fill='gray'
+                                key={index}
+                                textLength={props.aesthetics.text_size}
+                            >
                                 {item[2]}
                             </text>
                         )

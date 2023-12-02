@@ -62,5 +62,5 @@ export function calculate_center_line(center: Array<number>, angle: number, radi
 }
 
 export function calculate_text_position(center: Array<number>, text: string, radius: number, text_width: number) {
-    return [center[0] - text_width/2, center[1] - radius + 20]
+    return [center[0] - text_width / 2, center[1] - radius + 20]
 }

@@ -27,7 +27,6 @@ export type IrisAesthetics = {
     /** Dimensions in array form [width,height] **/
     dimensions: number[]
 
-
     /** Radius change between circles **/
     radius_change: number
 
