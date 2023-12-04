@@ -330,7 +330,7 @@ export default function Iris(props: IrisProps) {
                                 y={item[1]}
                                 fill='gray'
                                 key={index}
-                                textLength={props.aesthetics.text_size}w>
+                                textLength={props.aesthetics.text_size}>
                                 {item[2]}
                             </text>
                         )
