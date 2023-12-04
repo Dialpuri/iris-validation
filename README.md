@@ -24,10 +24,9 @@ export function Example(props: ExampleProps) {
 
     const aes: IrisAesthetics = {
         dimensions: [1000,1000],
-        center: [500,500], 
-        max_radius: 490, 
         radius_change: 50, 
-        header: 40
+        header: 40,
+        text_size: 12
     }
 
     const results: IrisData = {

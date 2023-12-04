@@ -1,6 +1,6 @@
 {
   "name": "iris-validation",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Iris is a visualisation aid for protein structure validation",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
