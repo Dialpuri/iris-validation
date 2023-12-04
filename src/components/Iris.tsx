@@ -28,7 +28,7 @@ import { IrisProps, ModelData, MultiRingData, ResidueData } from '../interface/i
  *    dimensions: [1000,1000]
  *    radius_change: 50,
  *    header: 40,
- *    text-size: 12
+ *    text_size: 12
  * }
  * results: IrisData = {
  *    data: backend_call().results
@@ -49,7 +49,7 @@ import { IrisProps, ModelData, MultiRingData, ResidueData } from '../interface/i
  *    dimensions: [1000,1000]
  *    radius_change: 50,
  *    header: 40,
- *    text-size: 12
+ *    text_size: 12
  * }
  * results: IrisData = {
  *    data: DATA,
@@ -330,8 +330,7 @@ export default function Iris(props: IrisProps) {
                                 y={item[1]}
                                 fill='gray'
                                 key={index}
-                                textLength={props.aesthetics.text_size}
-                            >
+                                textLength={props.aesthetics.text_size}w>
                                 {item[2]}
                             </text>
                         )
