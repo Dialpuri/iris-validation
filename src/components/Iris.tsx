@@ -39,8 +39,11 @@ import { IrisProps, ModelData, MultiRingData, ResidueData } from '../interface/i
  *    from_wasm: true
  *    results: results
  *    aesthetics: aes
- *    callback: (residue) => {
+ *    click_callback: (residue) => {
  *       // use residue ID supplied
+ *     },
+ *    hover_callback: (residue) => {
+ *      // use residue ID supplied by hover callback
  *     }
  * }
  * ===========
@@ -60,8 +63,11 @@ import { IrisProps, ModelData, MultiRingData, ResidueData } from '../interface/i
  *    from_wasm: false
  *    results: results
  *    aesthetics: aes
- *    callback: (residue) => {
+ *    click_callback: (residue) => {
  *       // use residue ID supplied
+ *     },
+ *    hover_callback: (residue) => {
+ *      // use residue ID supplied by hover callback
  *     }
  * }
  * ============
@@ -245,8 +251,12 @@ export default function Iris(props: IrisProps) {
 
         const residue = get_current_residue(angle)
 
+        const residue_id =`${selectedChain}/${residue}`
         if (click) {
-            props.callback(`${selectedChain}/${residue}`)
+            props.click_callback(residue_id)
+        } 
+        else { 
+            props.hover_callback(residue_id)
         }
     }
 
@@ -330,7 +340,8 @@ export default function Iris(props: IrisProps) {
                                 y={item[1]}
                                 fill='gray'
                                 key={index}
-                                textLength={props.aesthetics.text_size}>
+                                textLength={props.aesthetics.text_size}
+                            >
                                 {item[2]}
                             </text>
                         )

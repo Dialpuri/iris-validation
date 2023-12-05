@@ -41,7 +41,8 @@ export interface IrisProps {
     from_wasm: boolean
     results: IrisData
     aesthetics: IrisAesthetics
-    callback: (residue: string) => void
+    click_callback: (residue: string) => void
+    hover_callback: (residue: string) => void
 }
 
 /** Type spec for result bindings - from web assembly**/
